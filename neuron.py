@@ -6,13 +6,13 @@ class Neuron:
         self.b = 0
         self.w = [0 for _ in range(num_weights)]
 
-    def eval(self, values: list[float]) -> float:
-        """Takes a list of values (features in dataset)
+    def eval(self, inputs: list[float]) -> float:
+        """Takes a list of inputs (features in dataset)
         and computes weighted sum of Neuron."""
         z = 0
         # compute the weighted sum
         for i in range(len(self.w)):
-            z += values[i] * self.w[i]
+            z += inputs[i] * self.w[i]
         # add the bias
         z += self.b
         return z
