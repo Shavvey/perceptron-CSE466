@@ -4,6 +4,7 @@ class Neuron:
 
     def __init__(self, num_weights: int):
         self.b = 0
+        # init weights to zero
         self.w = [0 for _ in range(num_weights)]
 
     def eval(self, inputs: list[float]) -> float:
@@ -18,6 +19,7 @@ class Neuron:
         return z
 
     def train(self, data: list[list[float]], iters: int):
+        """Train the neuron based on data provided"""
         # features inside dataset (last element should we label)
         num_features = len(data[0]) - 1
         # update the weights based on data
@@ -36,5 +38,12 @@ class Neuron:
                     # update bias
                     self.b = y
 
-    def test(self, data: list[list[float]]) -> float:
-        pass
+    def test(self, data: list[list[float]]) -> list[float]:
+        results: list[float] = []
+        # extract data point, use feature as params in weighted sum
+        for d in data:
+            z = self.eval(d)
+            # output 1 if weighted sum is greater than bias, 0 otherwise
+            res = 1 if z > 0 else 0
+            results.append(res)
+        return results
