@@ -42,7 +42,7 @@ class ConfusionMatrix:
 
     def __str__(self) -> str:
         """Get nice looking string representation of confusion/classifcation matrix"""
-        sb: str = f"[ TP: {self.true_positive:02d} | NP: {self.false_negative:02d} ]\n"
+        sb: str = f"[ TP: {self.true_positive:02d} | FN: {self.false_negative:02d} ]\n"
         sb += f"[ FP: {self.false_positive:02d} | TN: {self.true_negative:02d} ]"
         return sb
 
@@ -54,7 +54,7 @@ class Stats:
         for i, _ in enumerate(preds):
             if preds[i] != actuals[i]:
                 num_incorrect += 1
-        return (num_incorrect / len(preds)) * 100 
+        return (num_incorrect / len(preds)) * 100
 
     @staticmethod
     def f1_score(preds: list[Boolean], actuals: list[Boolean]) -> float:

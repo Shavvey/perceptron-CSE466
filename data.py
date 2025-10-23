@@ -19,7 +19,7 @@ def get_data(
     Optional params dictate how many example and what features to take.
     Need to specify class (flower species) to train the neuron/perceptron on."""
     if num_data == None:
-        num_data = 1 >> 31  # get all data
+        num_data = 1 << 32 # get all data
     dataset = []
     class_found = 0
     nclass_found = 0
