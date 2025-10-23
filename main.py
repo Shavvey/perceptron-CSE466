@@ -1,5 +1,7 @@
-from data import get_data
+from data import get_actuals, get_data
 from neuron import Neuron
+from boolean import Boolean
+from stats import ConfusionMatrix, Stats
 
 
 def main():
@@ -8,6 +10,12 @@ def main():
     # create neuron, makes weights the same as the number of features
     n = Neuron(len(data[0]) - 1)
     n.train(data, 100)
+    preds = n.test(data)
+    actuals = get_actuals(data)
+    cm = ConfusionMatrix(preds, actuals)
+    print(cm)
+    pi = Stats.percent_incorrect(preds, actuals)
+    print(f"% Incorrent: {pi:.2f}")
 
 if __name__ == "__main__":
     main()

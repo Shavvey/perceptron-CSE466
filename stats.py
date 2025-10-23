@@ -32,17 +32,36 @@ class ConfusionMatrix:
         self.true_negative = true_negative
         self.false_negative = false_negative
 
+    def precision(self) -> float:
+        """Precision is defined as the number of true positives divided by total positives"""
+        return self.true_positive / (self.true_positive + self.false_positive)
+
+    def recall(self) -> float:
+        """Recall is defined as the number of true positives divided by the number of actual positives (TP + FN)"""
+        return self.true_positive / (self.true_positive + self.false_negative)
+
+    def __str__(self) -> str:
+        """Get nice looking string representation of confusion/classifcation matrix"""
+        sb: str = f"[ TP: {self.true_positive:02d} | NP: {self.false_negative:02d} ]\n"
+        sb += f"[ FP: {self.false_positive:02d} | TN: {self.true_negative:02d} ]"
+        return sb
+
 
 class Stats:
     @staticmethod
-    def MSE(preds: list[Boolean], actuals: list[Boolean]) -> float:
-        sum = 0
-        n = len(preds)
+    def percent_incorrect(preds: list[Boolean], actuals: list[Boolean]) -> float:
+        num_incorrect = 0
         for i, _ in enumerate(preds):
-            sum += (actuals[i].value - preds[i].value) ** 2
-        sum /= n
-        return sum
+            if preds[i] != actuals[i]:
+                num_incorrect += 1
+        return (num_incorrect / len(preds)) * 100 
 
     @staticmethod
-    def get_cmatrix(preds: list[Boolean], actuals: list[Boolean]) -> ConfusionMatrix:
-        return ConfusionMatrix(preds, actuals)
+    def f1_score(preds: list[Boolean], actuals: list[Boolean]) -> float:
+        """Defined as the harmonic mean of precision and recall"""
+        cm = ConfusionMatrix(preds, actuals)
+        # get precision and recall from confusion matrix
+        recall = cm.recall()
+        precision = cm.precision()
+        f1 = (2 * recall * precision) / (precision + recall)
+        return f1

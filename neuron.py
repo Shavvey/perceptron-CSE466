@@ -42,11 +42,12 @@ class Neuron:
                     self.b += y
 
     def test(self, data: list[list[float]]) -> list[Boolean]:
+        """Test the current configuration of the network by gathering it's list of predictions"""
         results: list[Boolean] = []
         # extract data point, use feature as params in weighted sum
         for d in data:
             z = self.eval(d)
-            # output 1 if weighted sum is greater than bias, 0 otherwise
+            # output 1 (YES) if weighted sum is greater than bias, -1 (NO) otherwise
             res = Boolean.YES if z > 0 else Boolean.NO
             results.append(res)
         return results
