@@ -1,3 +1,6 @@
+from boolean import Boolean
+
+
 class Neuron:
     b: float
     w: list[float]
@@ -5,14 +8,14 @@ class Neuron:
     def __init__(self, num_weights: int):
         self.b = 0
         # init weights to zero
-        self.w = [0 for _ in range(num_weights)]
+        self.w = [0 for _ in range(0, num_weights)]
 
     def eval(self, inputs: list[float]) -> float:
         """Takes a list of inputs (features in dataset)
         and computes weighted sum of Neuron."""
         z = 0
         # compute the weighted sum
-        for i in range(len(self.w)):
+        for i in range(0, len(self.w)):
             z += inputs[i] * self.w[i]
         # add the bias
         z += self.b
@@ -36,14 +39,14 @@ class Neuron:
                     for i in range(len(self.w)):
                         self.w[i] = self.w[i] + y * d[i]
                     # update bias
-                    self.b = y
+                    self.b += y
 
-    def test(self, data: list[list[float]]) -> list[float]:
-        results: list[float] = []
+    def test(self, data: list[list[float]]) -> list[Boolean]:
+        results: list[Boolean] = []
         # extract data point, use feature as params in weighted sum
         for d in data:
             z = self.eval(d)
             # output 1 if weighted sum is greater than bias, 0 otherwise
-            res = 1 if z > 0 else 0
+            res = Boolean.YES if z > 0 else Boolean.NO
             results.append(res)
         return results
