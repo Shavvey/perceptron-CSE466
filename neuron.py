@@ -10,6 +10,9 @@ class Neuron:
         # init weights to zero
         self.w = [0 for _ in range(0, num_weights)]
 
+    def __str__(self) -> str:
+        return f"[{self.w}], {self.b}"
+
     def eval(self, inputs: list[float]) -> float:
         """Takes a list of inputs (features in dataset)
         and computes weighted sum of Neuron."""

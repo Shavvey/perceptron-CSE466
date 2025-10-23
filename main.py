@@ -1,6 +1,5 @@
 from data import get_actuals, get_data
 from neuron import Neuron
-from boolean import Boolean
 from stats import ConfusionMatrix, Stats
 
 
@@ -18,6 +17,7 @@ def main():
     print(f"% Incorrent: {pi:.2f}")
     f1 = Stats.f1_score(preds, actuals)
     print(f"F1 Score: {f1}")
+    print(n)
 
 if __name__ == "__main__":
     main()

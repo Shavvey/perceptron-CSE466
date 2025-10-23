@@ -16,7 +16,7 @@ def get_data(
     data_class: str, num_data: int | None = None, features: list[int] | None = None
 ) -> list[list[float]]:
     """Pick out features we will use for traning inside iris dataset.
-    Optional params dictate how many example and what features to take.
+    Optional params dictate how many examples and what features to take.
     Need to specify class (flower species) to train the neuron/perceptron on."""
     if num_data == None:
         num_data = 1 << 32 # get all data
@@ -26,10 +26,10 @@ def get_data(
     with open(DATA_PATH) as csv_file:
         reader = csv.reader(csv_file)
         header = reader.__next__()
+        label_idx = len(header) - 1  # label will be in the last idx of line
         if features == None:
-            features = [i for i in range(0, len(header) - 1)]  # select all features
+            features = [i for i in range(0, len(header) - 1)]  # select all features if none specified in params
         for line in reader:
-            label_idx = len(line) - 1  # label will be in the last idx of line
             if line[label_idx] == data_class and class_found < num_data:
                 class_found += 1
                 # cast features into floats
