@@ -26,26 +26,26 @@ class Neuron:
 
     def train(self, data: list[list[float]], iters: int):
         """Train the neuron based on data provided"""
-        # features inside dataset (last element should we label)
+        # features inside dataset (last element should be label)
         num_features = len(data[0]) - 1
         # update the weights based on data
         for _ in range(iters):
             # loop through the features in inside dataset
-            for d in data:
+            for row in data:
                 # eval result, update w and b if prediction is incorrect
-                z = self.eval(d[0:num_features])
-                # label, which is last element in line
-                y = d[-1]
+                z = self.eval(row[0:num_features])
+                # label, which is the last element in row
+                y = row[-1]
                 # weighted sum, times binary {-1, 1} label
                 if z * y <= 0:
                     # update weights
                     for i in range(len(self.w)):
-                        self.w[i] = self.w[i] + y * d[i]
+                        self.w[i] = self.w[i] + y * row[i]
                     # update bias
                     self.b += y
 
     def test(self, data: list[list[float]]) -> list[Boolean]:
-        """Test the current configuration of the network by gathering it's list of predictions"""
+        """Test the current configuration of the network by gathering its list of predictions"""
         results: list[Boolean] = []
         # extract data point, use feature as params in weighted sum
         for d in data:

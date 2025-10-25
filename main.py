@@ -57,6 +57,8 @@ def train_all_features():
 def main():
     print("ALL FEATURES TRAINING")
     train_all_features()
+    print("BEST FEATURE PAIR")
+    train_two_features()
 
 
 if __name__ == "__main__":
