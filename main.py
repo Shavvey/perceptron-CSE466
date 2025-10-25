@@ -3,7 +3,7 @@ from neuron import Neuron
 from stats import ConfusionMatrix, Stats
 from boolean import Boolean
 
-DATA_CLASS = "versicolor"
+DATA_CLASS = "setosa"
 
 
 def print_statistics(preds: list[Boolean], actuals: list[Boolean]):
@@ -11,7 +11,7 @@ def print_statistics(preds: list[Boolean], actuals: list[Boolean]):
     print(cm)
     print(f"Incorrect %: {Stats.percent_incorrect(preds, actuals):.2f}")
     print(f"F1 Score: {Stats.f1_score(preds, actuals):.2f}")
-    print(f"Precision: {cm.precision()}\nRecall: {cm.recall():.2f}")
+    print(f"Precision: {cm.precision():.2f}\nRecall: {cm.recall():.2f}")
 
 
 def train_two_features():
@@ -55,7 +55,6 @@ def train_all_features():
 
 
 def main():
-    train_two_features()
     print("ALL FEATURES TRAINING")
     train_all_features()
 
