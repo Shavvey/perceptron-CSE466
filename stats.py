@@ -1,4 +1,5 @@
 from boolean import Boolean
+import math as m
 
 
 class ConfusionMatrix:
@@ -65,3 +66,7 @@ class Stats:
         precision = cm.precision()
         f1 = (2 * recall * precision) / (precision + recall)
         return f1
+
+    @staticmethod
+    def sigmoid(x: float) -> float:
+        return 1 / (1 + m.exp(-x))

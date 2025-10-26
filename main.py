@@ -2,6 +2,7 @@ from data import get_actuals, get_data
 from neuron import Neuron
 from stats import ConfusionMatrix, Stats
 from boolean import Boolean
+from nnetwork import NeuralNetwork
 
 DATA_CLASS = "setosa"
 
@@ -55,10 +56,10 @@ def train_all_features():
 
 
 def main():
-    print("ALL FEATURES TRAINING")
-    train_all_features()
-    print("BEST FEATURE PAIR")
-    train_two_features()
+    network = NeuralNetwork.make_iris_network()
+    data = get_data(DATA_CLASS)
+    data_classes = ["setosa", "virginica", "versicolor"]
+    network.test(data, data_classes)
 
 
 if __name__ == "__main__":
