@@ -70,11 +70,22 @@ def get_best_two_features_preds():
     data_classes = ["setosa", "virginica", "versicolor"]
     preds = network.test(data, data_classes, input_features)
     for i, pred in enumerate(preds):
-        print(f"{pred}")
+        print(f"{i+1}:{pred}")
+
+
+def print_stats_for_single_classifer(data_class: str, num_examples: int):
+    train_data = get_data(data_class, num_examples)
+    test_data = get_data(data_class)
+    n = Neuron(len(train_data[0]) - 1)
+    n.train(train_data, 100)
+    print_statistics(n.test(test_data), get_actuals(test_data))
 
 
 def main():
+    # example of how to get combined predictions for best features
     get_best_two_features_preds()
+    # example of how to get stats for a single binary flower species classifiier
+    print_stats_for_single_classifer("setosa", 20)
 
 
 if __name__ == "__main__":
