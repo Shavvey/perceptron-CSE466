@@ -54,16 +54,27 @@ def train_all_features():
     actuals = get_actuals(test_data)
     print_statistics(preds, actuals)
 
+
 def get_four_features_preds():
-    network = NeuralNetwork.make_iris_network()
+    network = NeuralNetwork.make_iris_all_feature_network()
     data = get_test_data()
     data_classes = ["setosa", "virginica", "versicolor"]
     preds = network.test(data, data_classes)
     for i, pred in enumerate(preds):
+        print(f"{i+1}:{pred}")
+
+
+def get_best_two_features_preds():
+    network, input_features = NeuralNetwork.make_iris_best_two_feature_network()
+    data = get_test_data()
+    data_classes = ["setosa", "virginica", "versicolor"]
+    preds = network.test(data, data_classes, input_features)
+    for i, pred in enumerate(preds):
         print(f"{pred}")
 
+
 def main():
-    get_four_features_preds()
+    get_best_two_features_preds()
 
 
 if __name__ == "__main__":

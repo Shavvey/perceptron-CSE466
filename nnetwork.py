@@ -1,5 +1,5 @@
 from neuron import Neuron
-from data import get_data
+from data import get_data, get_actuals
 from stats import Stats
 import util
 
@@ -27,9 +27,14 @@ class NeuralNetwork:
         ys = []  # output to layers
         for row in data:
             xs = row
-            for layer in self.layers:
-                for neuron in layer:
-                    y = neuron.eval(xs)
+            for idx, layer in enumerate(self.layers):
+                for i, neuron in enumerate(layer):
+                    y = None
+                    if input_features == None or idx != 0:
+                        y = neuron.eval(xs)
+                    elif idx == 0:
+                        # only use the features
+                        y = neuron.eval([xs[f] for f in input_features[i]])
                     ys.append(y)
                 xs = list.copy(ys)  # new inputs will come from prev layer outputs
                 ys.clear()
@@ -43,7 +48,7 @@ class NeuralNetwork:
         return pred_classes
 
     @staticmethod
-    def make_iris_network() -> "NeuralNetwork":
+    def make_iris_all_feature_network() -> "NeuralNetwork":
         """Simple function to return network for iris dataset"""
         data_classes = ["setosa", "virginica", "versicolor"]
         # first train the perceptrons
@@ -54,3 +59,34 @@ class NeuralNetwork:
             n.train(train_data, 100)
             neurons.append(n)
         return NeuralNetwork([neurons])
+
+    @staticmethod
+    def make_iris_best_two_feature_network() -> tuple["NeuralNetwork", list[list[int]]]:
+        data_classes = ["setosa", "virginica", "versicolor"]
+        neurons: list[Neuron] = []
+        input_features: list[list[int]] = []
+        for data_class in data_classes:
+            FEATURES = [i for i in range(0, 4)]
+            best_neuron: Neuron = Neuron(0)  # find best neuron from picked features
+            best_features = []  # find best features
+            best_f1_score = 0  # use f1 score to find optimal features + neuron config
+            for first in FEATURES:  # pick first feature
+                for second in [
+                    feature for feature in FEATURES if feature != first
+                ]:  # pick second feature
+                    feature_pair = [first, second]
+                    train_data = get_data(data_class, 39, feature_pair)
+                    test_data = get_data(data_class, features=feature_pair)
+                    n = Neuron(len(train_data[0]) - 1)
+                    n.train(train_data, 100)
+                    preds = n.test(test_data)
+                    actuals = get_actuals(test_data)
+                    f1_score = Stats.f1_score(preds, actuals)
+                    if f1_score > best_f1_score:
+                        best_f1_score = f1_score
+                        best_neuron = n
+                        best_features = feature_pair
+            neurons.append(best_neuron) # get best neuron
+            input_features.append(best_features) # get best feaures of neuron
+        return (NeuralNetwork([neurons]), input_features)
+                
