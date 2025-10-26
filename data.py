@@ -19,7 +19,7 @@ def get_data(
     Optional params dictate how many examples and what features to take.
     Need to specify class (flower species) to train the neuron/perceptron on."""
     if num_data == None:
-        num_data = 1 << 32 # get all data
+        num_data = 1 << 32  # get all data
     dataset = []
     class_found = 0
     nclass_found = 0
@@ -28,7 +28,9 @@ def get_data(
         header = reader.__next__()
         label_idx = len(header) - 1  # label will be in the last idx of line
         if features == None:
-            features = [i for i in range(0, len(header) - 1)]  # select all features if none specified in params
+            features = [
+                i for i in range(0, len(header) - 1)
+            ]  # select all features if none specified in params
         for line in reader:
             if line[label_idx] == data_class and class_found < num_data:
                 class_found += 1
@@ -51,9 +53,30 @@ def get_actuals(data: list[list[float]]) -> list[Boolean]:
     return [Boolean(d[-1]) for d in data]
 
 
+def get_actual_classes() -> list[str]:
+    preds = []
+    with open(DATA_PATH) as csv_file:
+        reader = csv.reader(csv_file)
+        _ = reader.__next__()  # throw away header
+        for line in reader:
+            preds.append(line[-1])
+    return preds
+
+
+def get_test_data() -> list[list[float]]:
+    with open(DATA_PATH) as csv_file:
+        data: list[list[float]] = []
+        reader = csv.reader(csv_file)
+        _ = reader.__next__()  # throw away header
+        for line in reader:
+            llen = len(line)
+            if line[-1] == '':
+                row = [float(data) for data in line[0:llen-1]]
+                data.append(row)
+    return data
+
+
 if __name__ == "__main__":
     data = get_data(CLASS, 35)
-    idx = 1
-    for d in data:
-        print(f"{idx}:{d}")
-        idx += 1
+    for i, d in enumerate(data):
+        print(f"{i+1}:{d}")

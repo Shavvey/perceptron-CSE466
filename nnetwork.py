@@ -14,30 +14,33 @@ class NeuralNetwork:
         """Takes pretrained neurons as input inside `layers`"""
         self.layers = layers
 
-    def test(self, data: list[list[float]], data_classes: list[str]):
+    def test(
+        self,
+        data: list[list[float]],
+        data_classes: list[str],
+        input_features: list[list[int]] | None = None,
+    ):
+        """Test perceptron network, input_features optionally let's us discriminate on what input to use.
+        This is used when we create a percpetron out of only the two best features for each neuron classifier."""
         outputs = []
-        xs = [] # inputs to layers
-        ys = [] # output to layers
+        xs = []  # inputs to layers
+        ys = []  # output to layers
         for row in data:
             xs = row
             for layer in self.layers:
                 for neuron in layer:
                     y = neuron.eval(xs)
                     ys.append(y)
-                xs = list.copy(
-                    ys
-                )  # new inputs will come from prev layer outputs
+                xs = list.copy(ys)  # new inputs will come from prev layer outputs
                 ys.clear()
-            outputs.append([Stats.sigmoid(x) for x in xs]) # tap xs once loop is done
+            outputs.append([Stats.sigmoid(x) for x in xs])  # tap xs once loop is done
         # make prediction to terms classses
         pred_classes: list[str] = []
         for output in outputs:
             idx = util.idx_max(output)
             pred = data_classes[idx]
-            print(pred)
             pred_classes.append(pred)
         return pred_classes
-            
 
     @staticmethod
     def make_iris_network() -> "NeuralNetwork":

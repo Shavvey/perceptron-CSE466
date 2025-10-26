@@ -1,4 +1,4 @@
-from data import get_actuals, get_data
+from data import get_actuals, get_data, get_test_data
 from neuron import Neuron
 from stats import ConfusionMatrix, Stats
 from boolean import Boolean
@@ -54,12 +54,16 @@ def train_all_features():
     actuals = get_actuals(test_data)
     print_statistics(preds, actuals)
 
+def get_four_features_preds():
+    network = NeuralNetwork.make_iris_network()
+    data = get_test_data()
+    data_classes = ["setosa", "virginica", "versicolor"]
+    preds = network.test(data, data_classes)
+    for i, pred in enumerate(preds):
+        print(f"{pred}")
 
 def main():
-    network = NeuralNetwork.make_iris_network()
-    data = get_data(DATA_CLASS)
-    data_classes = ["setosa", "virginica", "versicolor"]
-    network.test(data, data_classes)
+    get_four_features_preds()
 
 
 if __name__ == "__main__":
