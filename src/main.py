@@ -85,7 +85,7 @@ def main():
     # example of how to get combined predictions for best features
     get_best_two_features_preds()
     # example of how to get stats for a single binary flower species classifiier
-    print_stats_for_single_classifer("setosa", 20)
+    print_stats_for_single_classifer("setosa", 39)
 
 
 if __name__ == "__main__":

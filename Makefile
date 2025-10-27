@@ -1,5 +1,8 @@
-run: main.py
-	python3 main.py
+MAIN=src/main.py
+DATA=src/data.py
 
-data: data.py
-	python3 data.py
+run: $(MAIN)
+	python3 $(MAIN)
+
+data: $(DATA)
+	python3 $(DATA)

@@ -6,10 +6,7 @@ such that we have `x` examples of our target class, along
 with `x` non-examples (examples of other classes our
 model must reject)"""
 
-FEATURES = [0, 1]  # the selected features of our dataset (in feature indices)
-CLASS = "setosa"
 DATA_PATH = "iris_rnd_train.csv"  # hard-coded csv path
-NUM_DATA = 7  # number of examples for class our chosen class, as well as non-examples (not our chosen class)
 
 
 def get_data(
@@ -77,6 +74,6 @@ def get_test_data() -> list[list[float]]:
 
 
 if __name__ == "__main__":
-    data = get_data(CLASS, 35)
+    data = get_data('setosa', 35)
     for i, d in enumerate(data):
         print(f"{i+1}:{d}")
