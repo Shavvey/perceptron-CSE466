@@ -1,4 +1,5 @@
 import csv as csv
+from math import floor
 from boolean import Boolean
 
 """This file is meant to preprocess the iris dataset,
@@ -48,6 +49,10 @@ def get_actuals(data: list[list[float]]) -> list[Boolean]:
     """Return all the labels of the data, using our special boolean enum"""
     # assumes that the last part of each row in data is the label
     return [Boolean(d[-1]) for d in data]
+
+def get_train_test_split(data: list[list[float]], train_ratio: float) -> tuple[list[list[float]], list[list[float]]]:
+    train_idx = floor(len(data) * train_ratio)
+    return (data[:train_idx], data[train_idx:])
 
 
 def get_actual_classes() -> list[str]:

@@ -35,10 +35,14 @@ class ConfusionMatrix:
 
     def precision(self) -> float:
         """Precision is defined as the number of true positives divided by total positives"""
+        if self.true_positive + self.false_positive == 0:
+            return 0
         return self.true_positive / (self.true_positive + self.false_positive)
 
     def recall(self) -> float:
         """Recall is defined as the number of true positives divided by the number of actual positives (TP + FN)"""
+        if self.true_positive + self.false_negative == 0:
+            return 0
         return self.true_positive / (self.true_positive + self.false_negative)
 
     def __str__(self) -> str:
@@ -64,9 +68,21 @@ class Stats:
         # get precision and recall from confusion matrix
         recall = cm.recall()
         precision = cm.precision()
+        if recall + precision == 0:
+            return 0
         f1 = (2 * recall * precision) / (precision + recall)
         return f1
 
     @staticmethod
     def sigmoid(x: float) -> float:
         return 1 / (1 + m.exp(-x))
+
+    @staticmethod
+    def recall(preds: list[Boolean], actuals: list[Boolean]) -> float:
+        cm = ConfusionMatrix(preds, actuals)
+        return cm.recall()
+
+    @staticmethod
+    def precision(preds: list[Boolean], actuals: list[Boolean]) -> float:
+        cm = ConfusionMatrix(preds, actuals)
+        return cm.precision()

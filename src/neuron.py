@@ -23,6 +23,23 @@ class Neuron:
         # add the bias
         z += self.b
         return z
+    
+    def train_step(self, data: list[list[float]]):
+        """Do one training step of data"""
+        num_features = len(data[0]) - 1
+        # loop through the features in inside dataset
+        for row in data:
+            # eval result, update w and b if prediction is incorrect
+            z = self.eval(row[0:num_features])
+            # label, which is the last element in row
+            y = row[-1]
+            # weighted sum, times binary {-1, 1} label
+            if z * y <= 0:
+                # update weights
+                for i in range(len(self.w)):
+                    self.w[i] = self.w[i] + y * row[i]
+                # update bias
+                self.b += y
 
     def train(self, data: list[list[float]], iters: int):
         """Train the neuron based on data provided"""
