@@ -62,8 +62,8 @@ def graph_train_all_features(flower_species_label: str, max_itrs: int):
     recall_scores = []
     precision_scores = []
     # train training data
-    train_data = get_data(DATA_CLASS, 39)
-    test_data = get_data(DATA_CLASS)
+    train_data = get_data(flower_species_label, 39)
+    test_data = get_data(flower_species_label)
     # get test data
     # create perceptron
     nn = Neuron(len(train_data[0]) - 1)
@@ -81,21 +81,66 @@ def graph_train_all_features(flower_species_label: str, max_itrs: int):
         precision_scores.append(precision)
         # make a single train step
         nn.train_step(train_data)
-    fig, axs = pp.subplots(2,2)
+    fig, axs = pp.subplots(2, 2)
     fig.suptitle(f"Performance Graph for {flower_species_label.capitalize()} Training")
     # create graph
     itrs = [itr for itr in range(max_itrs)]
-    axs[0,0].set_title('Incorrect (%) vs. Train Iteration')
-    axs[0,0].plot(itrs, percent_incorrect_scores, 'g--')
+    axs[0, 0].set_title("Incorrect (%) vs. Train Iteration")
+    axs[0, 0].plot(itrs, percent_incorrect_scores, "g--")
 
-    axs[0,1].set_title('F1 Scores vs. Train Iteration')
-    axs[0,1].plot(itrs, f1_scores, 'r--')
+    axs[0, 1].set_title("F1 Scores vs. Train Iteration")
+    axs[0, 1].plot(itrs, f1_scores, "r--")
 
-    axs[1,0].set_title('Recall Scores vs. Train Iteration')
-    axs[1,0].plot(itrs, recall_scores,'b--')
+    axs[1, 0].set_title("Recall Scores vs. Train Iteration")
+    axs[1, 0].plot(itrs, recall_scores, "b--")
 
-    axs[1,1].set_title('Precision Scores vs. Train Iteration')
-    axs[1,1].plot(itrs, precision_scores, 'y--')
+    axs[1, 1].set_title("Precision Scores vs. Train Iteration")
+    axs[1, 1].plot(itrs, precision_scores, "y--")
+    pp.show()
+
+
+def graph_train_two_features(
+    flower_species_label: str, max_itrs: int, features: list[int]
+):
+    percent_incorrect_scores = []
+    f1_scores = []
+    recall_scores = []
+    precision_scores = []
+    # train training data
+    train_data = get_data(flower_species_label, 25, features)
+    test_data = get_data(flower_species_label, features=features)
+    # get test data
+    # create perceptron
+    nn = Neuron(len(train_data[0]) - 1)
+    for _ in range(max_itrs):
+        preds = nn.test(test_data)
+        actuals = get_actuals(test_data)
+        pi = Stats.percent_incorrect(preds, actuals)
+        f1 = Stats.f1_score(preds, actuals)
+        recall = Stats.recall(preds, actuals)
+        precision = Stats.precision(preds, actuals)
+        # collect
+        percent_incorrect_scores.append(pi)
+        f1_scores.append(f1)
+        recall_scores.append(recall)
+        precision_scores.append(precision)
+        # make a single train step
+        nn.train_step(train_data)
+    fig, axs = pp.subplots(2, 2)
+    fig.suptitle(f"Performance Graph for {flower_species_label.capitalize()} Training")
+    # create graph
+    itrs = [itr for itr in range(max_itrs)]
+    axs[0, 0].set_title("Incorrect (%) vs. Train Iteration")
+    axs[0, 0].plot(itrs, percent_incorrect_scores, "g--")
+
+    axs[0, 1].set_title("F1 Scores vs. Train Iteration")
+    axs[0, 1].plot(itrs, f1_scores, "r--")
+
+    axs[1, 0].set_title("Recall Scores vs. Train Iteration")
+    axs[1, 0].plot(itrs, recall_scores, "b--")
+
+    axs[1, 1].set_title("Precision Scores vs. Train Iteration")
+    axs[1, 1].plot(itrs, precision_scores, "y--")
     pp.show()
 
 
@@ -127,7 +172,7 @@ def print_stats_for_single_classifer(data_class: str, num_examples: int):
 
 def main():
     # example of how to get combined predictions for best features
-    graph_train_all_features("setosa", 3)
+    graph_train_two_features("virginica", 30, [0, 2])
 
 
 if __name__ == "__main__":
